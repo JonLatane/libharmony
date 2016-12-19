@@ -1,0 +1,3 @@
+include 'jvm', 'javascript'
+rootProject.name = 'libharmony'
+
