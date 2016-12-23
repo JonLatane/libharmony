@@ -24,6 +24,11 @@ fun Char.isDiminished(perfect: Boolean = false): Boolean {
             (perfect && isFlat())
 }
 
+fun Char.toOctave(): Int {
+    if(!isDigit()) throw Throwable("toOctave can only be called on digits")
+    return toInt() - 48
+}
+
 fun Char.isNatural(): Boolean {
     return this == NATURAL
 }

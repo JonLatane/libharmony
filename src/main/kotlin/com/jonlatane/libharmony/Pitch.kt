@@ -62,7 +62,7 @@ data class Pitch(
                 else if (enharmonic[i].isSharp())
                     result += 1
                 else if (enharmonic[i].isDigit()) {
-                    result += 12 * (enharmonic[i].toInt() - 4)
+                    result += 12 * (enharmonic[i].toOctave() - 4)
                 }
                 i += 1
             }
@@ -77,7 +77,7 @@ data class Pitch(
          * The main point of the rest of this framework is the question:
          * "when does using B#3 or Dbb4 make more sense to the person reading?"
          */
-        fun getEnharmonics(tone: Int): List<String> {
+        fun getEnharmonics(tone: Int): Set<String> {
             val baseTone = tone % TWELVETONE
             val result = mutableListOf<String>()
             TWELVE_TONE_NAMES.mapValues { it.toString() }.forEach {
@@ -95,7 +95,7 @@ data class Pitch(
                     it + octave 
                 else
                     it + (octave - 1)
-            }
+            }.toSet()
         }
     }
 }

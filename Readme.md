@@ -17,8 +17,8 @@ TODO.
 
 Build as JAR:
 
-`./gradlew jvm:jar`
+`./gradlew jar`
 
 Build as .js file:
 
-`./gradlew jvm:compileKotlin2Js`
+`./gradlew javascript:compileKotlin2Js`
