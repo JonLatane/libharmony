@@ -3,14 +3,25 @@ package com.jonlatane.libharmony
 val FLAT = '\u266D'
 val SHARP = '#'
 val NATURAL = '\u266E'
+val MAJOR = 'M'
+val MINOR = '-'
+val DIMINISHED = '\u00B0'
 
 fun Char.isFlat(): Boolean {
     return this == FLAT || this == 'b'
 }
 
-
 fun Char.isSharp(): Boolean {
     return this == SHARP || this == '#'
+}
+
+fun Char.isMajor() : Boolean {
+    return this == MAJOR
+}
+
+fun Char.isDiminished(perfect: Boolean = false): Boolean {
+    return this == DIMINISHED ||
+            (perfect && isFlat())
 }
 
 fun Char.isNatural(): Boolean {

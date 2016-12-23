@@ -1,12 +1,17 @@
 package com.jonlatane.libharmony
 
+import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+
 /**
- * The first function below is about going from enharmonic to tone - it's dead easy. The inverse
- * is what the rest of the library is about :) 
+ * The [Pitch] is the base primitive of libharmony.  It is basically a [Pair]<[Int], [String]?>
+ * with the invariant that, if the "enharmonic" (String part) is provided, it must be true
+ * that:
+ * 
+ * * [tone] exactly matches [getTone] of [enharmonic]
+ * * [enharmonic] is in the list [getEnharmonics] of [tone]
  *
  * Created by jonlatane on 12/17/16.
  */
-
 data class Pitch(
         val tone: Int,
         val enharmonic: String? = null
@@ -37,6 +42,16 @@ data class Pitch(
         }
     }
     companion object {
+        /**
+         * Consumes a given string [enharmonic], like "Ab3" or "F#".  In the latter case,
+         * the system will assume "F#4".
+         * 
+         * Produces an integer representation of the tone with the baseline "C4" -> 0.
+         * So "Bb4" -> 0, "C#4" -> 1, "G4" -> 7, "C5" -> 12.  A partial inverse is implemented
+         * in [getEnharmonics].
+         * 
+         * Suitable for all tones "C0" to "B9" (i.e., no negative octaves or octaves >= 10).
+         */
         fun getTone(enharmonic: String): Int {
             if(enharmonic.length > 5) throw Throwable("Too long")
             var result = TWELVE_TONE_INVERSE[enharmonic[0]]!!
@@ -53,68 +68,34 @@ data class Pitch(
             }
             return result
         }
-    }
-}
 
-interface ImmutablePitchSet : Set<Pitch>
-open class PitchSet(
-        val modulus: Modulus? = null,
-        vararg elements: Pitch
-) : MutableSet<Pitch> by mutableSetOf(*elements), ImmutablePitchSet {
-    fun add(tone: Int): Boolean {
-        return add(Pitch(tone))
-    }
-    
-    fun contains(tone: Int): Boolean {
-        return filter {it.tone == tone}.isNotEmpty()
-    }
-
-
-    fun lower(tone: Int): Int? {
-        if(modulus == null) {
-            return filter {it.tone < tone }.maxBy { it.tone }?.tone
-        } else {
-            return (
-                filter { it.tone % modulus < tone % modulus }
-                        .maxBy { it.tone % modulus } ?:
-                filter { it.tone % modulus < (tone + modulus.octaveSteps) % modulus }
-                        .maxBy { it.tone % modulus }
-            )?.tone
+        /**
+         * A partial inverse of [getTone].
+         * 
+         * For the tone 0, returns ["C4", "Dbb4", "B#3"].
+         * 
+         * The main point of the rest of this framework is the question:
+         * "when does using B#3 or Dbb4 make more sense to the person reading?"
+         */
+        fun getEnharmonics(tone: Int): List<String> {
+            val baseTone = tone % TWELVETONE
+            val result = mutableListOf<String>()
+            TWELVE_TONE_NAMES.mapValues { it.toString() }.forEach {
+                when(baseTone - it.key) {
+                    0 -> result.add(it.value)
+                    -1 -> result.add(it.value + FLAT)
+                    -2 -> result.add(it.value + FLAT + FLAT)
+                    1 -> result.add(it.value + SHARP)
+                    2 -> result.add(it.value + SHARP + SHARP)
+                }
+            }
+            val octave = TWELVETONE.octave(tone)
+            return result.map {
+                if(!it.startsWith("B$SHARP"))
+                    it + octave 
+                else
+                    it + (octave - 1)
+            }
         }
-    }
-
-    fun floor(tone: Int): Int? {
-        if(modulus == null) {
-            return filter {it.tone <= tone }.maxBy { it.tone }?.tone
-        } else {
-            return (
-                    filter { it.tone % modulus <= tone % modulus }
-                            .maxBy { it.tone % modulus } ?:
-                    filter { it.tone % modulus <= (tone + modulus.octaveSteps) % modulus }
-                            .maxBy { it.tone % modulus }
-                    )?.tone
-        }
-    }
-
-    fun ceiling(tone: Int): Int? {
-        if(modulus == null) {
-            return filter {it.tone >= tone }.maxBy { it.tone }?.tone
-        } else {
-            return (
-                    filter { it.tone % modulus >= tone % modulus }
-                            .maxBy { it.tone % modulus } ?:
-                    filter { it.tone % modulus >= (tone + modulus.octaveSteps) % modulus }
-                            .maxBy { it.tone % modulus }
-                    )?.tone
-        }
-    }
-
-
-    fun tailSet(tone: Int): PitchSet {
-        return PitchSet(modulus, *filter { it.tone > tone }.sortedBy { it.tone }.toTypedArray())
-    }
-
-    companion object {
-        val REST: ImmutablePitchSet = PitchSet()
     }
 }

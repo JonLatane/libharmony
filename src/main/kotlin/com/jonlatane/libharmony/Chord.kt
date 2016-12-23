@@ -28,7 +28,6 @@ open class Chord(
         var root: Pitch = Pitch(0)
 ) : PitchSet(Modulus()) {
     companion object {
-        val DIMINISHED = "\u00B0"
 
         val NO_CHORD = Chord()
 
@@ -136,7 +135,7 @@ open class Chord(
             }
 
             // M3
-            if (c.contains(root!! + 4)) {
+            if (c.contains(root + 4)) {
                 println("M3 is in the chord!")
                 certainty += 10
                 // M3P5 - major triad present
@@ -945,7 +944,7 @@ open class Chord(
 
                 if (m.groupValues[2] === "-") {
                     three = root + 3
-                } else if (m.groupValues[2] == DIMINISHED) {
+                } else if (m.groupValues[2] == DIMINISHED.toString()) {
                     three = root + 3
                     five = root + 6
                 } else if (m.groupValues[2] == "+") {
