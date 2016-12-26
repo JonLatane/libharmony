@@ -16,6 +16,11 @@ data class Pitch(
         val tone: Int,
         val enharmonic: String? = null
 ) {
+    /**
+     * Convenience constructor from enharmonic only based on [getTone]
+     */
+    constructor(enharmonic: String) : this(getTone(enharmonic), enharmonic)
+    
     init {
         invariant()
     }
@@ -80,11 +85,11 @@ data class Pitch(
         fun getEnharmonics(tone: Int): Set<String> {
             val baseTone = tone % TWELVETONE
             val result = mutableListOf<String>()
-            TWELVE_TONE_NAMES.mapValues { it.toString() }.forEach {
-                when(baseTone - it.key) {
+            TWELVE_TONE_NAMES.mapValues { it.value.toString() }.forEach {
+                when((baseTone - it.key) % TWELVETONE) {
                     0 -> result.add(it.value)
-                    -1 -> result.add(it.value + FLAT)
-                    -2 -> result.add(it.value + FLAT + FLAT)
+                    11 -> result.add(it.value + FLAT)
+                    10 -> result.add(it.value + FLAT + FLAT)
                     1 -> result.add(it.value + SHARP)
                     2 -> result.add(it.value + SHARP + SHARP)
                 }

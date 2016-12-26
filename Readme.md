@@ -16,9 +16,20 @@ TODO.
 ### Building
 
 Build as JAR:
-
-`./gradlew jar`
+```
+./gradlew jar
+```
 
 Build as .js file:
 
-`./gradlew javascript:compileKotlin2Js`
+```
+./gradlew javascript:compileKotlin2Js
+```
+
+### Testing
+
+Testing is only implemented for the JVM, but hey, it's all Kotlin... right?
+
+```
+./gradlew test
+```
