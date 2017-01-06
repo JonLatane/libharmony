@@ -1,0 +1,21 @@
+
+apply plugin: 'kotlin2js'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-js-library:$kotlin_version"
+}
+
+compileKotlin2Js {
+    kotlinOptions {
+        sourceMap = true
+        outputFile = "${rootProject.projectDir}/dist/libharmony-${version}.js"
+        suppressWarnings = false
+        verbose = true
+        metaInfo = false
+    }
+}
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.kotlin.srcDirs += '../src/main/kotlin'
+}

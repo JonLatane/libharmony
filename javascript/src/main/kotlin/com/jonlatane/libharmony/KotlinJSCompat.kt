@@ -1,8 +1,9 @@
 package com.jonlatane.libharmony
 
+@Suppress("Unused_Parameter")
 @native fun parseInt(s: String): Int = noImpl
 
-@native fun String.toInt() = parseInt(this)
+fun String.toInt() = parseInt(this)
 
 @native fun Char.isDigit(): Boolean {
     try {

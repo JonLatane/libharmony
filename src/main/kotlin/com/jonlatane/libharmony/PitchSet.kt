@@ -57,6 +57,17 @@ open class PitchSet(
     fun tailSet(tone: Int): PitchSet {
         return PitchSet(modulus, *filter { it.tone > tone }.sortedBy { it.tone }.toTypedArray())
     }
+    
+    open override fun toString(): String {
+        var result = "("
+        var first = true
+        for(pitch in this) {
+            if(!first) result += ','
+            first = false
+            result += pitch
+        }
+        return  result + ')'
+    }
 
     companion object {
         val REST: ImmutablePitchSet = PitchSet()

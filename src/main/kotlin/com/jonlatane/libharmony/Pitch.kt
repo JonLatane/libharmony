@@ -46,6 +46,10 @@ data class Pitch(
             throw Throwable("Pitch enharmonic does not match tone.")
         }
     }
+
+    override fun toString(): String {
+        return enharmonic ?: tone.toString()
+    }
     companion object {
         /**
          * Consumes a given string [enharmonic], like "Ab3" or "F#".  In the latter case,

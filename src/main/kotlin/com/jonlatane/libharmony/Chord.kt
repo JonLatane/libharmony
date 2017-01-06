@@ -7,7 +7,6 @@ package com.jonlatane.libharmony
 import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
 import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 
-
 /**
  * Chords work much like PitchSets, but they have a com.jonlatane.libharmony.Modulus: the number of tones an octave is divided into. Ex:
  * Given a 12-tone octave, a Chord with both 0 (C4) and 12 (C5) is identical to a Chord with only one of the two.
@@ -24,9 +23,15 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
  * *
  * @getCharacteristic and @guessCharacteristic, for guessing the characteristic of a chord
  */
-open class Chord(
-        var root: Pitch = Pitch(0)
-) : PitchSet(Modulus()) {
+open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
+    var root: Pitch
+    init {
+        root = elements.elementAtOrElse(0, {Pitch(0)})
+    }
+    override fun toString(): String {
+        return super.toString() + " / $root"
+    }
+
     companion object {
 
         val NO_CHORD = Chord()
@@ -926,15 +931,10 @@ open class Chord(
                     "((?:(?:add)?(?:b|#)?(?:-5|7|9|11|13))*)") // more color tones to be parsed later (6)
             val m = p.matchEntire(s)
             if (m != null) {
-                println(m.groupValues[1] + " | " +
-                        m.groupValues[2] + " | " +
-                        m.groupValues[3] + " | " +
-                        m.groupValues[4] + " | " +
-                        m.groupValues[5] + " | " +
-                        m.groupValues[6])
-                
                 val root = Pitch.getTone(m.groupValues[1])
+                val rootPitch = Pitch(root, m.groupValues[1])
                 result.root = Pitch(root, m.groupValues[1])
+                result.add(rootPitch)
 
                 // quality
                 var two = -1
@@ -966,6 +966,7 @@ open class Chord(
                 var seven = -1
 
                 // color quality
+                
                 val thirdsSpan = m.groupValues[4]
                 val colorQualityInterval: Int
                 if (thirdsSpan == "")

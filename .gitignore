@@ -1,7 +1,5 @@
 build
-jvm/build
-javascript/build
 .idea
 .gradle
-disy/libharmony-*/
-dist/libharmony-*/*
+dist/*.js.map
+dist/libharmony-*/
