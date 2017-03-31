@@ -55,7 +55,7 @@ open class PitchSet(
 
 
     fun tailSet(tone: Int): PitchSet {
-        return PitchSet(modulus, *filter { it.tone > tone }.sortedBy { it.tone }.toTypedArray())
+        return PitchSet(modulus, *filter { it.tone >= tone }.sortedBy { it.tone }.toTypedArray())
     }
     
     open override fun toString(): String {

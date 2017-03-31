@@ -1,10 +1,5 @@
 package com.jonlatane.libharmony
 
-/**
- * Created by jonlatane on 12/18/16.
- */
-
-
 import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
 import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 
@@ -17,7 +12,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 
  * @author Jon
  */
-class Key(root: Pitch) : Scale(root) {
+@native class Key(root: Pitch) : Scale(root) {
     constructor(scale: Scale) : this(scale.root) {
         addAll(scale)
     }
@@ -46,9 +41,8 @@ class Key(root: Pitch) : Scale(root) {
      * *
      * @return
      */
-    fun getNoteName(tone: Int): String {
+    @native fun getNoteName(tone: Int): String {
         val i: Int = tone % modulus!!
-        println("Getting note name for " + i + " in " + toString())
         var result = ""
 
         // This method works by careful interlocking of the heptatonic and twelve-tone systems.
@@ -57,7 +51,7 @@ class Key(root: Pitch) : Scale(root) {
         // Note that this is scale degrees and thus is assumed to be heptatonic (as per documentation)
         val p = degreeOf(i)
 
-        if (p.first === p.second) {
+        if (p.first == p.second) {
             val letterName = toHeptatonicCharacter((rootCharIndex + p.first - 1) % HEPTATONIC)
             result += letterName
             if (i < TWELVE_TONE_INVERSE[letterName]!!) {
@@ -67,10 +61,8 @@ class Key(root: Pitch) : Scale(root) {
                 result += '#'
             }
         } else {
-            println("Trying to name note not in Key: " + p.first + "," + p.second
-                    + ";" + TWELVETONE.distance(i, getDegree(p.first)) + "," + TWELVETONE.distance(i, getDegree(p.second)))
             // represent it as a sharp/double-sharp/flat
-            if (TWELVETONE.distance(i, getDegree(p.first)) < TWELVETONE.distance(i, getDegree(p.second))) {
+            if (TWELVETONE.distance(i, this[p.first]) < TWELVETONE.distance(i, this[p.second])) {
                 val letterName = toHeptatonicCharacter((rootCharIndex + p.first - 1) % HEPTATONIC)
                 result += letterName
 
@@ -106,30 +98,28 @@ class Key(root: Pitch) : Scale(root) {
             }
 
         }
-        println("Got note name " + result)
         return result
     }
 
-    companion object {
-        fun getRootLikelihoodsAndNames(inputRootCandidates: Collection<Int>, c: Chord, k: Key): Map<Int, List<String>> {
-            val result = mutableMapOf<Int, MutableList<String>>()
-
-            for (n in inputRootCandidates) {
-                var candidate = guessCharacteristic(c, n)
-                if (n == c.root.tone) {
-                    candidate = Pair<String, Int>(candidate.first, candidate.second + 1000)
-                }
-                var bucket: MutableList<String>? = result[candidate.second]!!
-                if (bucket == null) {
-                    bucket = mutableListOf<String>()
-                    result.put(candidate.second, bucket)
-                }
-
-                val rootName = k.getNoteName(n)
-                bucket.add(rootName + candidate.first)
+    @native fun getRootLikelihoodsAndNames(c: Chord): Map<Int, List<String>> {
+        val result = mutableMapOf<Int, MutableList<String>>()
+        for (n in 0..11) {
+            val data = Chord.guessCharacteristic(c, n)
+            val name = data.first
+            var score = data.second
+            if (n == c.root.tone) {
+                score += 1000
+            }
+            var bucket: MutableList<String>? = result[score]
+            if (bucket == null) {
+                bucket = mutableListOf<String>()
+                result.put(score, bucket)
             }
 
-            return result
+            val rootName = this.getNoteName(n)
+            bucket.add(rootName + name)
         }
+
+        return result
     }
 }

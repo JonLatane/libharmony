@@ -20,24 +20,21 @@ open class Scale(root: Pitch) : Chord(root) {
     /**
      * Returns the chromatic note for the provided scale degree of this Scale.
      * For C Major, the parameters 1, 2, 3, 4, 5, 6, 7 return 0, 2, 4, 5, 7, 9, 11.
-     * 
-     * For Chromatic, 
-
-     * @param tone
+     *
+     * @param scaleDegree
      * *
      * @return
      */
-    fun getDegree(tone: Int): Int {
-        var i = HEPTATONIC.mod(tone)
-        if (i == 0) {
-            i = 7
+    operator fun get(scaleDegree: Int): Int {
+        var normalDegree = Modulus(size).mod(scaleDegree)
+        if (normalDegree == 0) {
+            normalDegree = size
         }
         var currentDegree = 1
-        filter { Pitch(it.tone) > root }
         var itr = tailSet(root.tone).iterator()
         while (true) {
             if (itr.hasNext()) {
-                if (currentDegree == i) {
+                if (currentDegree == normalDegree) {
                     return itr.next().tone
                 } else {
                     itr.next()
@@ -63,28 +60,21 @@ open class Scale(root: Pitch) : Chord(root) {
      */
     fun degreeOf(tone: Int): Pair<Int, Int> {
         val i = TWELVETONE.mod(tone)
-
-        var upper = ceiling(i)
-        if (upper == null)
-            upper = ceiling(i - 12)
-        var lower = floor(i)
-        if (lower == null)
-            lower = floor(i + 12)
         var chromatic = root.tone
         var degree = 0
         var lowerDegree: Int? = null
-        var upperDegree: Int? = null
-        while (lowerDegree == null || upperDegree == null) {
+        while (lowerDegree == null) {
             if (contains(chromatic))
                 degree += 1
-            if (chromatic == lower)
+            if (chromatic == i)
                 lowerDegree = degree
-            if (chromatic == upper)
-                upperDegree = degree
             chromatic += 1
 
             chromatic = TWELVETONE.mod(chromatic)
         }
+        
+        val lowerDegreeToChromatic = this[lowerDegree]
+        val upperDegree = if(lowerDegreeToChromatic == i) lowerDegree else HEPTATONIC.mod(lowerDegree + 1)
 
         return Pair<Int, Int>(lowerDegree, upperDegree)
     }

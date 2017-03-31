@@ -1,3 +1,5 @@
 include 'javascript'
+include 'jvm'
+include 'shared'
 rootProject.name = 'libharmony'
 

@@ -17,7 +17,7 @@ TODO.
 
 Build as JAR:
 ```
-./gradlew jar
+./gradlew jvm:jar
 ```
 
 Build as .js file:
@@ -31,5 +31,5 @@ Build as .js file:
 Testing is only implemented for the JVM, but hey, it's all Kotlin... right?
 
 ```
-./gradlew test
+./gradlew jvm:test
 ```

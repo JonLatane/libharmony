@@ -1,6 +1,8 @@
 package com.jonlatane.libharmony
 
 import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+import com.jonlatane.libharmony.Pitch.Companion.getEnharmonics
+import com.jonlatane.libharmony.Pitch.Companion.getTone
 
 /**
  * The [Pitch] is the base primitive of libharmony.  It is basically a [Pair]<[Int], [String]?>

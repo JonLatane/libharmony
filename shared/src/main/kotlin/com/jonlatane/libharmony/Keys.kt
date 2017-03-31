@@ -13,8 +13,8 @@ object Keys {
     val CsMajor = Key(MajorScale(Pitch(1, "C$SHARP")))
     val CsMinor = Key(NaturalMinorScale(Pitch(1, "C$SHARP")))
 
-    val DMajor = Key(MajorScale(Pitch(2, "D$FLAT")))
-    val DMinor = Key(NaturalMinorScale(Pitch(2, "D$FLAT")))
+    val DMajor = Key(MajorScale(Pitch(2, "D")))
+    val DMinor = Key(NaturalMinorScale(Pitch(2, "D")))
 
     val EbMajor = Key(MajorScale(Pitch(3, "E$FLAT")))
     val EbMinor = Key(NaturalMinorScale(Pitch(3, "E$FLAT")))
@@ -45,6 +45,6 @@ object Keys {
     val AsMinor = Key(NaturalMinorScale(Pitch(10, "A$SHARP")))
 
     val BMajor = Key(MajorScale(Pitch(11, "B")))
-    val CbMajor = Key(MajorScale(Pitch(11, "C$FLAT")))
+    val CbMajor = Key(MajorScale(Pitch(11, "C${FLAT}5")))
     val BMinor = Key(NaturalMinorScale(Pitch(11, "B")))
 }

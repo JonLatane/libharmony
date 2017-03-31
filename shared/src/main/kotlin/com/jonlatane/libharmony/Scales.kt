@@ -13,7 +13,6 @@ class MajorScale(root: Pitch) : Scale(root) {
         add(root + 7)
         add(root + 9)
         add(root + 11)
-        println("MajorScale")
     }
 
     override val isMajor = true

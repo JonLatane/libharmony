@@ -8,12 +8,12 @@ import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
 import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 
 /**
- * Chords work much like PitchSets, but they have a com.jonlatane.libharmony.Modulus: the number of tones an octave is divided into. Ex:
+ * Chords work much like PitchSets, but they have a Modulus: the number of tones an octave is divided into. Ex:
  * Given a 12-tone octave, a Chord with both 0 (C4) and 12 (C5) is identical to a Chord with only one of the two.
  * They also have a root.  @Chord.Inversion has a bass as well.
 
  * In array output from Chords in 1357 format, -1 is used to imply that the element is not present.  Be wary
- * as this is not filtered by @com.jonlatane.libharmony.Modulus.getPitchClassOf .
+ * as this is not filtered by @Modulus.getPitchClassOf .
 
  * Some of a Chord's more interesting functions include:
 
@@ -23,11 +23,8 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
  * *
  * @getCharacteristic and @guessCharacteristic, for guessing the characteristic of a chord
  */
-open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
-    var root: Pitch
-    init {
-        root = elements.elementAtOrElse(0, {Pitch(0)})
-    }
+@native open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
+    var root: Pitch = elements.elementAtOrElse(0, {Pitch(0)})
     override fun toString(): String {
         return super.toString() + " / $root"
     }
@@ -126,26 +123,22 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
          * *
          * @return
          */
-        internal fun guessCharacteristic(c: Chord, root: Int): Pair<String, Int> {
+        @native fun guessCharacteristic(c: Chord, root: Int): Pair<String, Int> {
             var name = ""
             var certainty = 0
 
 
-            println("Guessing name for chord: " + c.toString() + "R:" + root)
 
             // Root should be in the chord, but doesn't have to be necessarily.
             if (c.contains(root)) {
                 certainty += 12
-                println("Root is in the chord!")
             }
 
             // M3
             if (c.contains(root + 4)) {
-                println("M3 is in the chord!")
                 certainty += 10
                 // M3P5 - major triad present
                 if (c.contains(root + 7)) {
-                    println("P5 is in the chord!")
                     certainty += 8
 
                     //M3P5M7 (major 7 type chord)
@@ -235,7 +228,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
                     }
                     // M3+5 - augmented chord
                 } else if (c.contains(root + 8)) {
-                    println("+5 is in the chord!")
                     name += "+"
                     certainty += 7
 
@@ -321,7 +313,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
                     // M3-5P11 - major flat five chord. We require a P11 to be present
                     // because normally if there is no perfect 5 we'd rather call this a #11.  This is ugly so make it less certain
                 } else if (c.contains(root + 6)) {
-                    println("-5 is in the chord!")
                     certainty += 1
 
                     // M3-5M7 (major 7 type chord)
@@ -405,7 +396,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
                     // No 5 present (name as if there's a perfect 5)
                     //M3x5
                 } else {
-                    println("No5 is in the chord!")
                     if (c.contains(root))
                         certainty += 5
                     //M3x5M7 (major 7 type chord)
@@ -499,12 +489,10 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
 
                 // m3 (and no M3 - if both are present we don't get here and it becomes a #9)
             } else if (c.contains(root + 3)) {
-                println("m3 is in the chord!")
                 certainty += 10
                 // m3P5 - major triad present
                 if (c.contains(root + 7)) {
                     name += "-"
-                    println("P5 is in the chord!")
                     certainty += 8
 
                     //m3P5M7 (major 7 type chord)
@@ -587,7 +575,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
 
                     // m3-5 - diminished chord/triad present
                 } else if (c.contains(root + 6)) {
-                    println("-5 is in the chord!")
                     certainty += 8
 
                     // m3-5M7 (diminished major 7 type chord)
@@ -671,7 +658,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
                     }
                     // m3x5 No 5 present (name as if there's a major 5)
                 } else {
-                    println("No5 is in the chord!")
                     if (c.contains(root))
                         certainty += 4
                     name += "-"
@@ -815,7 +801,6 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
 
                 // x2x3x4-5 - -5 chord, no M2, no M/m3, no P4
             } else if (c.contains(root + 6)) {
-                println("-5 is in the chord!")
                 certainty += 7
 
                 // x3-5M7 (diminished major 7 type chord)
