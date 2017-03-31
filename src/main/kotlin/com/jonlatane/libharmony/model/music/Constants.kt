@@ -1,4 +1,4 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
 val FLAT = '\u266D'
 val SHARP = '#'

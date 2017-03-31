@@ -1,5 +1,8 @@
 package com.jonlatane.libharmony
 
+import com.jonlatane.libharmony.model.music.FLAT
+import com.jonlatane.libharmony.model.music.Pitch
+import com.jonlatane.libharmony.model.music.SHARP
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -25,9 +28,9 @@ class PitchTest {
     @Test
     fun getEnharmonics() {
         mapOf(
-                0 to setOf("C4", "B${SHARP}3", "D$FLAT${FLAT}4"),
-                12 to setOf("C5", "B${SHARP}4", "D$FLAT${FLAT}5"),
-                5 to setOf("F4", "E${SHARP}4", "G$FLAT${FLAT}4")
+                0 to setOf("C4", "B${SHARP}3", "D${FLAT}${FLAT}4"),
+                12 to setOf("C5", "B${SHARP}4", "D${FLAT}${FLAT}5"),
+                5 to setOf("F4", "E${SHARP}4", "G${FLAT}${FLAT}4")
         ).forEach {
             val expected = it.value
             print("Testing ${it.key} -> $expected... ")

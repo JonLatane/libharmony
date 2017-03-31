@@ -2,18 +2,18 @@
  * Created by jonlatane on 12/17/16.
  */
 
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
-import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
-import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+import com.jonlatane.libharmony.model.music.Modulus.Companion.HEPTATONIC
+import com.jonlatane.libharmony.model.music.Modulus.Companion.TWELVETONE
 
 /**
- * Chords work much like PitchSets, but they have a com.jonlatane.libharmony.Modulus: the number of tones an octave is divided into. Ex:
+ * Chords work much like PitchSets, but they have a com.jonlatane.libharmony.model.music.Modulus: the number of tones an octave is divided into. Ex:
  * Given a 12-tone octave, a Chord with both 0 (C4) and 12 (C5) is identical to a Chord with only one of the two.
  * They also have a root.  @Chord.Inversion has a bass as well.
 
  * In array output from Chords in 1357 format, -1 is used to imply that the element is not present.  Be wary
- * as this is not filtered by @com.jonlatane.libharmony.Modulus.getPitchClassOf .
+ * as this is not filtered by @com.jonlatane.libharmony.model.music.Modulus.getPitchClassOf .
 
  * Some of a Chord's more interesting functions include:
 
@@ -26,7 +26,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
     var root: Pitch
     init {
-        root = elements.elementAtOrElse(0, {Pitch(0)})
+        root = elements.elementAtOrElse(0, { Pitch(0) })
     }
     override fun toString(): String {
         return super.toString() + " / $root"
@@ -1062,7 +1062,7 @@ open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *element
          */
         fun schenkerianToInt(s: String): Int {
             var result = 0
-            val regex = Regex("(#|$FLAT|-|\\+|)(\\d+)")
+            val regex = Regex("(#|${FLAT}|-|\\+|)(\\d+)")
             val matcher = regex.matchEntire(s)
             if (matcher != null) {
                 

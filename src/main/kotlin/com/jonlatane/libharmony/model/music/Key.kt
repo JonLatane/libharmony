@@ -1,12 +1,12 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
 /**
  * Created by jonlatane on 12/18/16.
  */
 
 
-import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
-import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+import com.jonlatane.libharmony.model.music.Modulus.Companion.HEPTATONIC
+import com.jonlatane.libharmony.model.music.Modulus.Companion.TWELVETONE
 
 /**
  * A Key is just what we think it is, and is sort of where we tie together

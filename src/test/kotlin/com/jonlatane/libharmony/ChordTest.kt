@@ -1,7 +1,9 @@
 package com.jonlatane.libharmony
 
-import com.jonlatane.libharmony.Chord.Companion.NO_CHORD
-import com.jonlatane.libharmony.Keys.CMajor
+import com.jonlatane.libharmony.model.music.Chord
+import com.jonlatane.libharmony.model.music.Chord.Companion.NO_CHORD
+import com.jonlatane.libharmony.model.music.Keys.CMajor
+import com.jonlatane.libharmony.model.music.Pitch
 import org.junit.Assert
 import org.junit.Test
 

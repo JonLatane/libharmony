@@ -1,7 +1,7 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
-import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
-import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+import com.jonlatane.libharmony.model.music.Modulus.Companion.HEPTATONIC
+import com.jonlatane.libharmony.model.music.Modulus.Companion.TWELVETONE
 
 /**
  * Scales work like Chords but should contain more notes.

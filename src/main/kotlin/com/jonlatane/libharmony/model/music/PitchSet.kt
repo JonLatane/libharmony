@@ -1,4 +1,4 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
 interface ImmutablePitchSet : Set<Pitch>
 open class PitchSet(

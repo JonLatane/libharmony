@@ -1,6 +1,6 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
-import com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC
+import com.jonlatane.libharmony.model.music.Modulus.Companion.HEPTATONIC
 
 /**
  * This model is about mapping notes to enharmonic names.  Heptatonics

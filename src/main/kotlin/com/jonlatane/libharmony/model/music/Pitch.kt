@@ -1,6 +1,6 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
-import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
+import com.jonlatane.libharmony.model.music.Modulus.Companion.TWELVETONE
 
 /**
  * The [Pitch] is the base primitive of libharmony.  It is basically a [Pair]<[Int], [String]?>
@@ -100,7 +100,7 @@ data class Pitch(
             }
             val octave = TWELVETONE.octave(tone)
             return result.map {
-                if(!it.startsWith("B$SHARP"))
+                if(!it.startsWith("B${SHARP}"))
                     it + octave 
                 else
                     it + (octave - 1)

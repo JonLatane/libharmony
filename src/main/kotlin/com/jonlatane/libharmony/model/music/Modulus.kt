@@ -1,4 +1,4 @@
-package com.jonlatane.libharmony
+package com.jonlatane.libharmony.model.music
 
 
 /**
@@ -24,7 +24,7 @@ data class Modulus constructor(val octaveSteps: Int = 12) {
     }
 
     /**
-     * Return the pitch class of the given note.  For a 12 com.jonlatane.libharmony.Modulus this means a number 0-11.
+     * Return the pitch class of the given note.  For a 12 com.jonlatane.libharmony.model.music.Modulus this means a number 0-11.
      * For heptatonic work, it is 0-6.
      * @param tone a note, where C4 = 0, B4 = 11
      * *
