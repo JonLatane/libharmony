@@ -28,6 +28,988 @@ this['libharmony-0.2'] = function (Kotlin) {
           toInt_pdl1w0$: function ($receiver) {
             return parseInt($receiver);
           },
+          isDigit_myv2d1$: function ($receiver) {
+            try {
+              parseInt($receiver.toString());
+              return true;
+            }
+             catch (t) {
+              return false;
+            }
+          },
+          getChordsInCMajor: function (notes) {
+            var $receiver = Kotlin.kotlin.collections.toList_eg9ybj$(notes);
+            var destination = new Kotlin.ArrayList(Kotlin.kotlin.collections.collectionSizeOrDefault_0($receiver, 10));
+            var tmp$1;
+            tmp$1 = $receiver.iterator();
+            while (tmp$1.hasNext()) {
+              var item = tmp$1.next();
+              destination.add_za3rmp$(_.com.jonlatane.libharmony.PitchFromEnharmonic(item));
+            }
+            var pitches = Kotlin.copyToArray(destination);
+            var chord = new _.com.jonlatane.libharmony.Chord(pitches.slice());
+            var data = _.com.jonlatane.libharmony.Keys.CMajor.getRootLikelihoodsAndNames_s8x820$(chord);
+            return data;
+          },
+          Chord: Kotlin.createClass(function () {
+            return [_.com.jonlatane.libharmony.PitchSet];
+          }, function Chord(elements) {
+            Chord.baseInitializer.call(this, _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE, elements);
+            this.root = 0 >= 0 && 0 <= Kotlin.kotlin.collections.get_lastIndex_eg9ybj$(elements) ? elements[0] : new _.com.jonlatane.libharmony.Pitch(0);
+          }, /** @lends _.com.jonlatane.libharmony.Chord.prototype */ {
+            toString: function () {
+              return _.com.jonlatane.libharmony.PitchSet.prototype.toString.call(this) + (' / ' + this.root);
+            }
+          }, /** @lends _.com.jonlatane.libharmony.Chord */ {
+            Companion: Kotlin.createObject(null, function Companion() {
+              _.com.jonlatane.libharmony.Chord.Companion.NO_CHORD = new _.com.jonlatane.libharmony.Chord([]);
+            }, /** @lends _.com.jonlatane.libharmony.Chord.Companion.prototype */ {
+              nameTones_0: function (c, root, tones) {
+                var tmp$2;
+                var name = '';
+                var certainty = 0;
+                for (tmp$2 = 0; tmp$2 !== tones.length; ++tmp$2) {
+                  var m = tones[tmp$2];
+                  if (m === 9)
+                    if (c.contains_za3lpa$(root + 2)) {
+                      name += '(9)';
+                    }
+                     else if (c.contains_za3lpa$(root + 1)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '9');
+                    }
+                     else if (c.contains_za3lpa$(root + 3) && c.contains_za3lpa$(root + 4)) {
+                      name += '#9';
+                    }
+                   else if (m === -9) {
+                    if (c.contains_za3lpa$(root + 1)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '9');
+                    }
+                  }
+                   else if (m === 11)
+                    if (c.contains_za3lpa$(root + 5)) {
+                      name += '(11)';
+                    }
+                     else if (c.contains_za3lpa$(root + 6) && (c.contains_za3lpa$(root + 7) || (c.contains_za3lpa$(root + 8) && c.contains_za3lpa$(root + 4)))) {
+                      name += '#11';
+                    }
+                   else if (m === -11) {
+                    if (c.contains_za3lpa$(root + 6)) {
+                      name += '#11';
+                    }
+                  }
+                   else if (m === 6)
+                    if (c.contains_za3lpa$(root + 9)) {
+                      name += '(6)';
+                    }
+                     else if (c.contains_za3lpa$(root + 8) && c.contains_za3lpa$(root + 7)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '6');
+                      certainty -= 5;
+                    }
+                   else if (m === -6)
+                    if (c.contains_za3lpa$(root + 8) && c.contains_za3lpa$(root + 7)) {
+                      name += '(' + _.com.jonlatane.libharmony.FLAT + '6)';
+                      certainty -= 5;
+                    }
+                     else if (c.contains_za3lpa$(root + 8)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '6');
+                      certainty -= 5;
+                    }
+                   else if (m === 13)
+                    if (c.contains_za3lpa$(root + 9)) {
+                      name += '(13)';
+                    }
+                     else if (c.contains_za3lpa$(root + 8) && c.contains_za3lpa$(root + 7)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '13');
+                    }
+                     else if (c.contains_za3lpa$(root + 10) && c.contains_za3lpa$(root + 11)) {
+                      name += '#13';
+                    }
+                   else if (m === 7)
+                    if (c.contains_za3lpa$(root + 10)) {
+                      name += '7';
+                    }
+                     else if (c.contains_za3lpa$(root + 11)) {
+                      name += 'M7';
+                    }
+                   else if (m === -7)
+                    if (c.contains_za3lpa$(root + 10)) {
+                      name += '7' + _.com.jonlatane.libharmony.FLAT + '5';
+                    }
+                     else if (c.contains_za3lpa$(root + 11)) {
+                      name += 'M7' + _.com.jonlatane.libharmony.FLAT + '5';
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.DIMINISHED, '7');
+                    }
+                   else if (m === 5)
+                    if (c.contains_za3lpa$(root + 8) && c.contains_za3lpa$(root + 9)) {
+                      name += '#5';
+                    }
+                     else if (c.contains_za3lpa$(root + 6)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.FLAT, '5');
+                    }
+                }
+                var result = new Kotlin.kotlin.Pair(name, certainty);
+                return result;
+              },
+              guessCharacteristic_frz5om$: function (c, root) {
+                var name = '';
+                var certainty = 0;
+                if (c.contains_za3lpa$(root)) {
+                  certainty += 12;
+                }
+                if (c.contains_za3lpa$(root + 4)) {
+                  certainty += 10;
+                  if (c.contains_za3lpa$(root + 7)) {
+                    certainty += 8;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p.first;
+                          certainty += p.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_0 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_0.first;
+                          certainty += p_0.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_1 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_1.first;
+                          certainty += p_1.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_2 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_2.first;
+                        certainty += p_2.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13';
+                          var p_3 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11]);
+                          name += p_3.first;
+                          certainty += p_3.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11';
+                          var p_4 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_4.first;
+                          certainty += p_4.second;
+                        }
+                         else {
+                          name += '9';
+                          var p_5 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_5.first;
+                          certainty += p_5.second;
+                        }
+                      }
+                       else {
+                        name += '7';
+                        var p_6 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_6.first;
+                        certainty += p_6.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      certainty += 6;
+                      name = name + '6';
+                      var p_7 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_7.first;
+                      certainty += p_7.second;
+                    }
+                     else {
+                      certainty += 8;
+                      var p_8 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      var colors = p_8.first;
+                      certainty += p_8.second;
+                      if (colors.length > 0 && (Kotlin.kotlin.text.startsWith_41xvrb$(colors, '#') || colors.charAt(0) === _.com.jonlatane.libharmony.FLAT))
+                        name += '(' + colors + ')';
+                      else
+                        name += colors;
+                    }
+                  }
+                   else if (c.contains_za3lpa$(root + 8)) {
+                    name += '+';
+                    certainty += 7;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 7;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p_9 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_9.first;
+                          certainty += p_9.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_10 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_10.first;
+                          certainty += p_10.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_11 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_11.first;
+                          certainty += p_11.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_12 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_12.first;
+                        certainty += p_12.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 6;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13';
+                          var p_13 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_13.first;
+                          certainty += p_13.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11';
+                          var p_14 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_14.first;
+                          certainty += p_14.second;
+                        }
+                         else {
+                          name += '9';
+                          var p_15 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_15.first;
+                          certainty += p_15.second;
+                        }
+                      }
+                       else {
+                        name += '7';
+                        var p_16 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_16.first;
+                        certainty += p_16.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      certainty += 6;
+                      name = name + 'M6';
+                      var p_17 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_17.first;
+                      certainty += p_17.second;
+                    }
+                     else {
+                      certainty += 7;
+                      var p_18 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_18.first;
+                      certainty += p_18.second;
+                    }
+                  }
+                   else if (c.contains_za3lpa$(root + 6)) {
+                    certainty += 1;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_19 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_19.first;
+                          certainty += p_19.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_20 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_20.first;
+                          certainty += p_20.second;
+                        }
+                         else {
+                          name += 'M9' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_21 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_21.first;
+                          certainty += p_21.second;
+                        }
+                      }
+                       else {
+                        name += 'M7' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_22 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_22.first;
+                        certainty += p_22.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_23 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_23.first;
+                          certainty += p_23.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_24 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_24.first;
+                          certainty += p_24.second;
+                        }
+                         else {
+                          name += '9' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_25 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_25.first;
+                          certainty += p_25.second;
+                        }
+                      }
+                       else {
+                        name += '7' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_26 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_26.first;
+                        certainty += p_26.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      certainty += 6;
+                      name += '6' + _.com.jonlatane.libharmony.FLAT + '5';
+                      var p_27 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_27.first;
+                      certainty += p_27.second;
+                    }
+                     else {
+                      name += 'M' + _.com.jonlatane.libharmony.FLAT + '5';
+                      var p_28 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      name += p_28.first;
+                      certainty += p_28.second;
+                    }
+                  }
+                   else {
+                    if (c.contains_za3lpa$(root))
+                      certainty += 5;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p_29 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_29.first;
+                          certainty += p_29.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_30 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_30.first;
+                          certainty += p_30.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_31 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_31.first;
+                          certainty += p_31.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_32 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_32.first;
+                        certainty += p_32.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13';
+                          var p_33 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_33.first;
+                          certainty += p_33.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11';
+                          var p_34 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_34.first;
+                          certainty += p_34.second;
+                        }
+                         else {
+                          name += '9';
+                          var p_35 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_35.first;
+                          certainty += p_35.second;
+                        }
+                      }
+                       else {
+                        name += '7';
+                        var p_36 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_36.first;
+                        certainty += p_36.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      certainty -= 1;
+                      name = name + '6';
+                      var p_37 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_37.first;
+                      certainty += p_37.second;
+                    }
+                     else {
+                      var p_38 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      var colors_0 = p_38.first;
+                      certainty += p_38.second;
+                      if (colors_0.length > 0 && (Kotlin.kotlin.text.startsWith_41xvrb$(colors_0, '#') || colors_0.charAt(0) === _.com.jonlatane.libharmony.FLAT))
+                        name += 'M' + colors_0;
+                      else
+                        name += colors_0;
+                      certainty += p_38.second;
+                    }
+                  }
+                }
+                 else if (c.contains_za3lpa$(root + 3)) {
+                  certainty += 10;
+                  if (c.contains_za3lpa$(root + 7)) {
+                    name += '-';
+                    certainty += 8;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p_39 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_39.first;
+                          certainty += p_39.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_40 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_40.first;
+                          certainty += p_40.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_41 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_41.first;
+                          certainty += p_41.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_42 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_42.first;
+                        certainty += p_42.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13';
+                          var p_43 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_43.first;
+                          certainty += p_43.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11';
+                          var p_44 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_44.first;
+                          certainty += p_44.second;
+                        }
+                         else {
+                          name += '9';
+                          var p_45 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_45.first;
+                          certainty += p_45.second;
+                        }
+                      }
+                       else {
+                        name += '7';
+                        var p_46 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_46.first;
+                        certainty += p_46.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      name = name + '6';
+                      var p_47 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_47.first;
+                      certainty += p_47.second;
+                    }
+                     else {
+                      var p_48 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      name += p_48.first;
+                      certainty += p_48.second;
+                    }
+                  }
+                   else if (c.contains_za3lpa$(root + 6)) {
+                    certainty += 8;
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 5;
+                      name = name + _.com.jonlatane.libharmony.DIMINISHED;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p_49 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_49.first;
+                          certainty += p_49.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_50 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_50.first;
+                          certainty += p_50.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_51 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_51.first;
+                          certainty += p_51.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_52 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_52.first;
+                        certainty += p_52.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      name += '-';
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_53 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_53.first;
+                          certainty += p_53.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_54 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_54.first;
+                          certainty += p_54.second;
+                        }
+                         else {
+                          name += '9' + _.com.jonlatane.libharmony.FLAT + '5';
+                          var p_55 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_55.first;
+                          certainty += p_55.second;
+                        }
+                      }
+                       else {
+                        name += '7' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_56 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_56.first;
+                        certainty += p_56.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.DIMINISHED, '7');
+                      var p_57 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      name += p_57.first;
+                      certainty += p_57.second;
+                    }
+                     else {
+                      name += _.com.jonlatane.libharmony.DIMINISHED;
+                      var p_58 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      name += p_58.first;
+                      certainty += p_58.second;
+                    }
+                  }
+                   else {
+                    if (c.contains_za3lpa$(root))
+                      certainty += 4;
+                    name += '-';
+                    if (c.contains_za3lpa$(root + 11)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += 'M13';
+                          var p_59 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_59.first;
+                          certainty += p_59.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += 'M11';
+                          var p_60 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_60.first;
+                          certainty += p_60.second;
+                        }
+                         else {
+                          name += 'M9';
+                          var p_61 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_61.first;
+                          certainty += p_61.second;
+                        }
+                      }
+                       else {
+                        name += 'M7';
+                        var p_62 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_62.first;
+                        certainty += p_62.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 10)) {
+                      certainty += 8;
+                      if (c.contains_za3lpa$(root + 2)) {
+                        certainty += 5;
+                        if (c.contains_za3lpa$(root + 9)) {
+                          name += '13';
+                          var p_63 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                          name += p_63.first;
+                          certainty += p_63.second;
+                        }
+                         else if (c.contains_za3lpa$(root + 5)) {
+                          name += '11';
+                          var p_64 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                          name += p_64.first;
+                          certainty += p_64.second;
+                        }
+                         else {
+                          name += '9';
+                          var p_65 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                          name += p_65.first;
+                          certainty += p_65.second;
+                        }
+                      }
+                       else {
+                        name += '7';
+                        var p_66 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                        name += p_66.first;
+                        certainty += p_66.second;
+                      }
+                    }
+                     else if (c.contains_za3lpa$(root + 9)) {
+                      certainty -= 1;
+                      name += '6';
+                      var p_67 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                      name += p_67.first;
+                      certainty += p_67.second;
+                    }
+                     else {
+                      var p_68 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                      name += p_68.first;
+                      certainty += p_68.second;
+                    }
+                  }
+                }
+                 else if (c.contains_za3lpa$(root + 2) && c.contains_za3lpa$(root + 5)) {
+                  certainty += 9;
+                  var seven = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7]).first;
+                  name += seven;
+                  name += 'sus24';
+                  var p_69 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [13]);
+                  name += p_69.first;
+                  certainty += p_69.second;
+                }
+                 else if (c.contains_za3lpa$(root + 5)) {
+                  certainty += 9;
+                  var seven_0 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7]).first;
+                  name += seven_0;
+                  name += 'sus4';
+                  var p_70 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-9, 13]);
+                  name += p_70.first;
+                  certainty += p_70.second;
+                }
+                 else if (c.contains_za3lpa$(root + 2)) {
+                  certainty += 9;
+                  var seven_1 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7]).first;
+                  name += seven_1;
+                  if (name === '')
+                    name += '2';
+                  else
+                    name += 'sus2';
+                  var p_71 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-11, 13]);
+                  name += p_71.first;
+                  certainty += p_71.second;
+                }
+                 else if (c.contains_za3lpa$(root + 7)) {
+                  if (c.contains_za3lpa$(root))
+                    certainty += 8;
+                  var seven_2 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7]).first;
+                  name += seven_2;
+                  if (seven_2 === '')
+                    name += '5';
+                  else
+                    name += '(no3)';
+                  var p_72 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-9, -11, 13]);
+                  name += p_72.first;
+                  certainty += p_72.second;
+                }
+                 else if (c.contains_za3lpa$(root + 8)) {
+                  if (c.contains_za3lpa$(root))
+                    certainty += 6;
+                  name += '+';
+                  var seven_3 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7]).first;
+                  name += seven_3;
+                  name += '(no3)';
+                  var p_73 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-9, -11, 13]);
+                  name += p_73.first;
+                  certainty += p_73.second;
+                }
+                 else if (c.contains_za3lpa$(root + 6)) {
+                  certainty += 7;
+                  if (c.contains_za3lpa$(root + 11)) {
+                    certainty += 7;
+                    name = name + _.com.jonlatane.libharmony.DIMINISHED + '(no3)';
+                    if (c.contains_za3lpa$(root + 2)) {
+                      if (c.contains_za3lpa$(root + 9)) {
+                        name += 'M13';
+                        var p_74 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                        name += p_74.first;
+                        certainty += p_74.second;
+                      }
+                       else if (c.contains_za3lpa$(root + 5)) {
+                        name += 'M11';
+                        var p_75 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                        name += p_75.first;
+                        certainty += p_75.second;
+                      }
+                       else {
+                        name += 'M9';
+                        var p_76 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                        name += p_76.first;
+                        certainty += p_76.second;
+                      }
+                    }
+                     else {
+                      name += 'M7';
+                      var p_77 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                      name += p_77.first;
+                      certainty += p_77.second;
+                    }
+                  }
+                   else if (c.contains_za3lpa$(root + 10)) {
+                    certainty += 8;
+                    if (c.contains_za3lpa$(root + 2)) {
+                      if (c.contains_za3lpa$(root + 9)) {
+                        name += '13' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_78 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11]);
+                        name += p_78.first;
+                        certainty += p_78.second;
+                      }
+                       else if (c.contains_za3lpa$(root + 5)) {
+                        name += '11' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_79 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9]);
+                        name += p_79.first;
+                        certainty += p_79.second;
+                      }
+                       else {
+                        name += '9' + _.com.jonlatane.libharmony.FLAT + '5';
+                        var p_80 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [11, 13]);
+                        name += p_80.first;
+                        certainty += p_80.second;
+                      }
+                    }
+                     else {
+                      name += '7' + _.com.jonlatane.libharmony.FLAT + '5';
+                      var p_81 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [9, 11, 13]);
+                      name += p_81.first;
+                      certainty += p_81.second;
+                    }
+                    name += '(no3)';
+                  }
+                   else if (c.contains_za3lpa$(root + 9)) {
+                    name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.DIMINISHED, '7');
+                    var p_82 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                    name += p_82.first;
+                    certainty += p_82.second;
+                  }
+                   else {
+                    name += Kotlin.kotlin.text.plus_68uai5$(_.com.jonlatane.libharmony.DIMINISHED, '(no3)');
+                    var p_83 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [-6, 9, 11]);
+                    name += p_83.first;
+                    certainty += p_83.second;
+                  }
+                }
+                 else {
+                  var p_84 = _.com.jonlatane.libharmony.Chord.Companion.nameTones_0(c, root, [7, -9, 13]);
+                  name += p_84.first;
+                  certainty += p_84.second;
+                }
+                return new Kotlin.kotlin.Pair(name, certainty);
+              },
+              getChordByName_61zpoe$: function (s) {
+                var tmp$0, tmp$2, tmp$4;
+                var result = new _.com.jonlatane.libharmony.Chord([]);
+                var p = Kotlin.kotlin.text.Regex_61zpoe$('((?:A|B|C|D|E|F|G)(?:#|b|' + _.com.jonlatane.libharmony.FLAT + ')?)' + '(-|\\+|' + _.com.jonlatane.libharmony.DIMINISHED + '|2|sus2|sus|sus4|sus24|5?)' + '(M?)(6|7|9|11|13|)((?:\\(no3\\))?)' + '((?:(?:add)?(?:b|#)?(?:-5|7|9|11|13))*)');
+                var m = p.matchEntire_6bul2c$(s);
+                if (m != null) {
+                  var root = _.com.jonlatane.libharmony.Pitch.Companion.getTone_61zpoe$(m.groupValues.get_za3lpa$(1));
+                  var rootPitch = new _.com.jonlatane.libharmony.Pitch(root, m.groupValues.get_za3lpa$(1));
+                  result.root = new _.com.jonlatane.libharmony.Pitch(root, m.groupValues.get_za3lpa$(1));
+                  result.add_za3rmp$(rootPitch);
+                  var two = -1;
+                  var three = -1;
+                  var four = -1;
+                  var five = -1;
+                  if (m.groupValues.get_za3lpa$(2) === '-') {
+                    three = root + 3;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), _.com.jonlatane.libharmony.DIMINISHED.toString())) {
+                    three = root + 3;
+                    five = root + 6;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), '+')) {
+                    three = root + 4;
+                    five = root + 8;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), '2') || Kotlin.equals(m.groupValues.get_za3lpa$(2), 'sus2')) {
+                    two = root + 2;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), 'sus') || Kotlin.equals(m.groupValues.get_za3lpa$(2), 'sus4')) {
+                    four = root + 5;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), 'sus24')) {
+                    two = root + 2;
+                    four = root + 5;
+                  }
+                   else if (Kotlin.equals(m.groupValues.get_za3lpa$(2), '') && Kotlin.equals(m.groupValues.get_za3lpa$(5), '')) {
+                    three = root + 4;
+                  }
+                  var six = -1;
+                  var seven = -1;
+                  var thirdsSpan = m.groupValues.get_za3lpa$(4);
+                  var colorQualityInterval;
+                  if (Kotlin.equals(thirdsSpan, ''))
+                    colorQualityInterval = -1;
+                  else
+                    colorQualityInterval = _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC.mod_za3lpa$(_.com.jonlatane.libharmony.toInt_pdl1w0$(thirdsSpan));
+                  tmp$0 = colorQualityInterval;
+                  if (tmp$0 === 6) {
+                    six = root + 8;
+                    if (colorQualityInterval === 4)
+                      four = root + 5;
+                    two = root + 2;
+                    if (five === root + 6)
+                      seven = root + 9;
+                    else if (Kotlin.equals(m.groupValues.get_za3lpa$(3), 'M'))
+                      seven = root + 11;
+                    else
+                      seven = root + 10;
+                  }
+                   else if (tmp$0 === 4) {
+                    if (colorQualityInterval === 4)
+                      four = root + 5;
+                    two = root + 2;
+                    if (five === root + 6)
+                      seven = root + 9;
+                    else if (Kotlin.equals(m.groupValues.get_za3lpa$(3), 'M'))
+                      seven = root + 11;
+                    else
+                      seven = root + 10;
+                  }
+                   else if (tmp$0 === 2) {
+                    two = root + 2;
+                    if (five === root + 6)
+                      seven = root + 9;
+                    else if (Kotlin.equals(m.groupValues.get_za3lpa$(3), 'M'))
+                      seven = root + 11;
+                    else
+                      seven = root + 10;
+                  }
+                   else if (tmp$0 === 0)
+                    if (five === root + 6)
+                      seven = root + 9;
+                    else if (Kotlin.equals(m.groupValues.get_za3lpa$(3), 'M'))
+                      seven = root + 11;
+                    else
+                      seven = root + 10;
+                  var p6 = Kotlin.kotlin.text.Regex_61zpoe$('(?:add)?((?:b|#)?((?:-5|6|7|9|11|13)))');
+                  var m6 = p6.matchEntire_6bul2c$(m.groupValues.get_za3lpa$(6));
+                  while (m6 != null) {
+                    var colorToneInterval = _.com.jonlatane.libharmony.toInt_pdl1w0$(m6.groupValues.get_za3lpa$(2));
+                    if (colorToneInterval === -5) {
+                      if (five === -1)
+                        five = root + 6;
+                    }
+                     else if (colorToneInterval === 6)
+                      six = root + _.com.jonlatane.libharmony.Chord.Companion.schenkerianToInt_61zpoe$(m6.groupValues.get_za3lpa$(1));
+                    else if (colorToneInterval === 7)
+                      seven = root + _.com.jonlatane.libharmony.Chord.Companion.schenkerianToInt_61zpoe$(m6.groupValues.get_za3lpa$(1));
+                    else if (colorToneInterval === 9)
+                      two = root + _.com.jonlatane.libharmony.Chord.Companion.schenkerianToInt_61zpoe$(m6.groupValues.get_za3lpa$(1));
+                    else if (colorToneInterval === 11)
+                      four = root + _.com.jonlatane.libharmony.Chord.Companion.schenkerianToInt_61zpoe$(m6.groupValues.get_za3lpa$(1));
+                    else if (colorToneInterval === 13)
+                      six = root + _.com.jonlatane.libharmony.Chord.Companion.schenkerianToInt_61zpoe$(m6.groupValues.get_za3lpa$(1));
+                    m6 = m6.next();
+                  }
+                  if (Kotlin.equals(m.groupValues.get_za3lpa$(5), '(no3)')) {
+                    three = -1;
+                  }
+                  if (five === -1) {
+                    five = root + 7;
+                  }
+                  tmp$2 = [two, three, four, five, six, seven];
+                  for (tmp$4 = 0; tmp$4 !== tmp$2.length; ++tmp$4) {
+                    var i = tmp$2[tmp$4];
+                    if (i !== -1)
+                      result.add_za3lpa$(i);
+                  }
+                }
+                return result;
+              },
+              schenkerianToInt_61zpoe$: function (s) {
+                var result = 0;
+                var regex = Kotlin.kotlin.text.Regex_61zpoe$('(#|\u266D|-|\\+|)(\\d+)');
+                var matcher = regex.matchEntire_6bul2c$(s);
+                if (matcher != null) {
+                  var interval = _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC.mod_za3lpa$(_.com.jonlatane.libharmony.toInt_pdl1w0$(matcher.groupValues.get_za3lpa$(2)));
+                  if (interval === 0)
+                    result = 11;
+                  else if (interval === 1)
+                    result = 0;
+                  else if (interval === 2)
+                    result = 2;
+                  else if (interval === 3)
+                    result = 4;
+                  else if (interval === 4)
+                    result = 5;
+                  else if (interval === 5)
+                    result = 7;
+                  else if (interval === 6)
+                    result = 9;
+                  else {
+                  }
+                  if (matcher.groupValues.get_za3lpa$(1).length > 0) {
+                    if (_.com.jonlatane.libharmony.isFlat_myv2d1$(matcher.groupValues.get_za3lpa$(1).charAt(0))) {
+                      result -= 1;
+                    }
+                     else if (_.com.jonlatane.libharmony.isSharp_myv2d1$(matcher.groupValues.get_za3lpa$(1).charAt(0))) {
+                      result += 1;
+                    }
+                     else if (matcher.groupValues.get_za3lpa$(1).charAt(0) === '+' && (result === 7 || result === 5)) {
+                      result += 1;
+                    }
+                     else if (matcher.groupValues.get_za3lpa$(1).charAt(0) === '+') {
+                      result += 2;
+                    }
+                     else if (matcher.groupValues.get_za3lpa$(1).charAt(0) === '-' && (result === 7 || result === 5)) {
+                      result -= 1;
+                    }
+                     else if (matcher.groupValues.get_za3lpa$(1).charAt(0) === '-') {
+                      result -= 2;
+                    }
+                  }
+                }
+                return _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.mod_za3lpa$(result);
+              }
+            }),
+            object_initializer$: function () {
+              _.com.jonlatane.libharmony.Chord.Companion;
+            }
+          }),
           isFlat_myv2d1$: function ($receiver) {
             return $receiver === _.com.jonlatane.libharmony.FLAT || $receiver === 'b';
           },
@@ -43,7 +1025,7 @@ this['libharmony-0.2'] = function (Kotlin) {
             return $receiver === _.com.jonlatane.libharmony.DIMINISHED || (perfect && _.com.jonlatane.libharmony.isFlat_myv2d1$($receiver));
           },
           toOctave_myv2d1$: function ($receiver) {
-            if (!$receiver.isDigit())
+            if (!_.com.jonlatane.libharmony.isDigit_myv2d1$($receiver))
               throw Kotlin.Throwable('toOctave can only be called on digits');
             return $receiver.charCodeAt(0) - 48;
           },
@@ -128,37 +1110,119 @@ this['libharmony-0.2'] = function (Kotlin) {
             var s2_heptClass = _.com.jonlatane.libharmony.toHeptatonicNumber_s8itvh$(s2.charAt(0));
             return s2_heptClass - s1_heptClass + 7 * (s2_octave - s1_octave);
           },
+          Key: Kotlin.createClass(function () {
+            return [_.com.jonlatane.libharmony.Scale];
+          }, function Key(root) {
+            Key.baseInitializer.call(this, root);
+            this.invariant();
+          }, /** @lends _.com.jonlatane.libharmony.Key.prototype */ {
+            invariant: function () {
+              if (this.root.enharmonic == null)
+                throw Kotlin.Throwable('Keys must have a root name.');
+            },
+            getNoteName_za3lpa$: function (tone) {
+              var tmp$0, tmp$1, tmp$2, tmp$3, tmp$4, tmp$5, tmp$6, tmp$7, tmp$8, tmp$9;
+              var i = _.com.jonlatane.libharmony.mod_gb6t67$(tone, (tmp$0 = this.modulus) != null ? tmp$0 : Kotlin.throwNPE());
+              var result = '';
+              var rootCharIndex = _.com.jonlatane.libharmony.toHeptatonicNumber_s8itvh$(((tmp$1 = this.root.enharmonic) != null ? tmp$1 : Kotlin.throwNPE()).charAt(0));
+              var p = this.degreeOf_za3lpa$(i);
+              if (p.first === p.second) {
+                var letterName = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.first - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
+                result += letterName;
+                if (i < ((tmp$2 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName)) != null ? tmp$2 : Kotlin.throwNPE())) {
+                  result += _.com.jonlatane.libharmony.FLAT;
+                }
+                if (i > ((tmp$3 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName)) != null ? tmp$3 : Kotlin.throwNPE())) {
+                  result += '#';
+                }
+              }
+               else {
+                if (_.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.get_za3lpa$(p.first)) < _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.get_za3lpa$(p.second))) {
+                  var letterName_0 = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.first - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
+                  result += letterName_0;
+                  if (i < ((tmp$4 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$4 : Kotlin.throwNPE())) {
+                    result += _.com.jonlatane.libharmony.FLAT;
+                  }
+                  if (i > ((tmp$5 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$5 : Kotlin.throwNPE())) {
+                    result += '#';
+                  }
+                  if (i > ((tmp$6 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$6 : Kotlin.throwNPE()) + 1) {
+                    result += '#';
+                  }
+                }
+                 else {
+                  var letterName_1 = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.second - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
+                  result += letterName_1;
+                  if (i > ((tmp$7 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$7 : Kotlin.throwNPE())) {
+                    result += '#';
+                  }
+                  if (i < ((tmp$8 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$8 : Kotlin.throwNPE())) {
+                    result += _.com.jonlatane.libharmony.FLAT;
+                  }
+                  if (i < ((tmp$9 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$9 : Kotlin.throwNPE()) - 1) {
+                    result += _.com.jonlatane.libharmony.FLAT;
+                  }
+                }
+              }
+              return result;
+            },
+            getRootLikelihoodsAndNames_s8x820$: function (c) {
+              var result = Kotlin.kotlin.collections.mutableMapOf_eoa9s7$([]);
+              for (var n = 0; n <= 11; n++) {
+                var data = _.com.jonlatane.libharmony.Chord.Companion.guessCharacteristic_frz5om$(c, n);
+                var name = data.first;
+                var score = data.second;
+                if (n === c.root.tone) {
+                  score += 1000;
+                }
+                var bucket = result.get_za3rmp$(score);
+                if (bucket == null) {
+                  bucket = Kotlin.kotlin.collections.mutableListOf_9mqe4v$([]);
+                  result.put_wn2jw4$(score, bucket);
+                }
+                var rootName = this.getNoteName_za3lpa$(n);
+                bucket.add_za3rmp$(rootName + name);
+              }
+              return result;
+            }
+          }),
+          Key_init_shmg3a$: function (scale, $this) {
+            $this = $this || Object.create(_.com.jonlatane.libharmony.Key.prototype);
+            _.com.jonlatane.libharmony.Key.call($this, scale.root);
+            $this.addAll_wtfk93$(scale);
+            return $this;
+          },
           Keys: Kotlin.createObject(null, function Keys() {
-            this.CMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
-            this.CMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
-            this.DbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'D\u266D')));
-            this.CsMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
-            this.CsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
-            this.DMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
-            this.DMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
-            this.EbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
-            this.EbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
-            this.DsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'D#')));
-            this.EMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
-            this.EMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
-            this.FMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
-            this.FMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
-            this.GbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'G\u266D')));
-            this.FsMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
-            this.FsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
-            this.GMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
-            this.GMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
-            this.AbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
-            this.GsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'G#')));
-            this.AbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
-            this.AMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
-            this.AMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
-            this.BbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
-            this.BbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
-            this.AsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'A#')));
-            this.BMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
-            this.CbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'C\u266D5')));
-            this.BMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
+            this.CMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
+            this.CMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
+            this.DbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'D\u266D')));
+            this.CsMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
+            this.CsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
+            this.DMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
+            this.DMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
+            this.EbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
+            this.EbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
+            this.DsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'D#')));
+            this.EMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
+            this.EMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
+            this.FMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
+            this.FMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
+            this.GbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'G\u266D')));
+            this.FsMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
+            this.FsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
+            this.GMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
+            this.GMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
+            this.AbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
+            this.GsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'G#')));
+            this.AbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
+            this.AMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
+            this.AMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
+            this.BbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
+            this.BbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
+            this.AsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'A#')));
+            this.BMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
+            this.CbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'C\u266D5')));
+            this.BMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
           }),
           mod_gb6t67$: function ($receiver, modulus) {
             return modulus.mod_za3lpa$($receiver);
@@ -265,7 +1329,7 @@ this['libharmony-0.2'] = function (Kotlin) {
               return this.enharmonic;
             },
             copy_19mbxw$: function (tone, enharmonic) {
-              return new _.com.jonlatane.libharmony.Pitch_init_61zpoe$(tone === void 0 ? this.tone : tone, enharmonic === void 0 ? this.enharmonic : enharmonic);
+              return new _.com.jonlatane.libharmony.PitchFromEnharmonic(tone === void 0 ? this.tone : tone, enharmonic === void 0 ? this.enharmonic : enharmonic);
             },
             hashCode: function () {
               var result = 0;
@@ -290,7 +1354,7 @@ this['libharmony-0.2'] = function (Kotlin) {
                     result -= 1;
                   else if (_.com.jonlatane.libharmony.isSharp_myv2d1$(enharmonic.charAt(i)))
                     result += 1;
-                  else if (enharmonic.charAt(i).isDigit()) {
+                  else if (_.com.jonlatane.libharmony.isDigit_myv2d1$(enharmonic.charAt(i))) {
                     result += 12 * (_.com.jonlatane.libharmony.toOctave_myv2d1$(enharmonic.charAt(i)) - 4);
                   }
                   i += 1;
@@ -341,7 +1405,7 @@ this['libharmony-0.2'] = function (Kotlin) {
               _.com.jonlatane.libharmony.Pitch.Companion;
             }
           }),
-          Pitch_init_61zpoe$: function (enharmonic, $this) {
+          PitchFromEnharmonic: function (enharmonic, $this) {
             $this = $this || Object.create(_.com.jonlatane.libharmony.Pitch.prototype);
             _.com.jonlatane.libharmony.Pitch.call($this, _.com.jonlatane.libharmony.Pitch.Companion.getTone_61zpoe$(enharmonic), enharmonic);
             return $this;
@@ -737,9 +1801,9 @@ this['libharmony-0.2'] = function (Kotlin) {
             }
           }),
           Scale: Kotlin.createClass(function () {
-            return [Chord];
+            return [_.com.jonlatane.libharmony.Chord];
           }, function Scale(root) {
-            Scale.baseInitializer.call(this, root);
+            Scale.baseInitializer.call(this, [root]);
             this.isMajor_usz75w$_0 = false;
             this.isMinor_usz75w$_0 = false;
           }, /** @lends _.com.jonlatane.libharmony.Scale.prototype */ {

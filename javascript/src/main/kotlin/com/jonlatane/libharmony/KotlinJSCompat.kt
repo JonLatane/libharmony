@@ -5,7 +5,7 @@ package com.jonlatane.libharmony
 
 fun String.toInt() = parseInt(this)
 
-@native fun Char.isDigit(): Boolean {
+fun Char.isDigit(): Boolean {
     try {
         parseInt(this.toString())
         return true
