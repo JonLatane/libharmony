@@ -1172,9 +1172,6 @@ this['libharmony-0.2'] = function (Kotlin) {
                 var data = _.com.jonlatane.libharmony.Chord.Companion.guessCharacteristic_frz5om$(c, n);
                 var name = data.first;
                 var score = data.second;
-                if (n === c.root.tone) {
-                  score += 1000;
-                }
                 var bucket = result.get_za3rmp$(score);
                 if (bucket == null) {
                   bucket = Kotlin.kotlin.collections.mutableListOf_9mqe4v$([]);

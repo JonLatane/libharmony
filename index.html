@@ -22,7 +22,7 @@
         feel free to <a href="https://github.com/jonlatane/libharmony">fork or contribute</a>.
     </p>
     <p>
-        Here's an example of what the Harmony library is capable of:
+        Here's an example of what the Harmony library is capable of (you'll need a modern browser here):
     </p>
     <div class="row">
         <div class="col-sm-6">
@@ -51,6 +51,7 @@
         </div>
         <div class="col-sm-6">
             <h4>Output</h4>
+            <div id="example-results"></div>
         </div>
     </div>
 </div>
@@ -58,7 +59,34 @@
 <script type="text/javascript" src="dist/web/kotlin.js"></script>
 <script type="text/javascript" src="dist/web/libharmony-0.2.js"></script>
 <script type="text/javascript">
-    var libharmony = this["libharmony-0.2"].com.jonlatane.libharmony;
+    var libharmony = window["libharmony-0.2"].com.jonlatane.libharmony;
+    var resultDiv = document.getElementById('example-results');
+    var blah;
+    function getChord() {
+        let notes = Array.from(document.querySelectorAll('input')).
+            filter((input) => input.value).
+            map((input) => input.value);
+        let result = null;
+        try {
+            result = libharmony.getChordsInCMajor(notes);
+        } catch(e) {
+            resultDiv.innerHTML = '<div class="alert alert-danger">Invalid input</div>';
+        }
+        if(result) {
+            blah = result;
+            let scores = Object.keys(result.bucketsByHash).sort((a,b) => b-a);
+            let resultHTML = '';
+            scores.forEach((score) => {
+                let size = 1 + 3*(score/50);
+                result.bucketsByHash[score].entries[0][1].array.forEach((chord) => {
+                    resultHTML += `<p style="font-size: ${size}em">${chord}</p>`;
+                });
+            });
+            resultDiv.innerHTML = resultHTML;
+        }
+    }
+    Array.from(document.querySelectorAll('input')).forEach((input) => input.onkeyup = getChord);
+    getChord();
 </script>
 </body>
 </html>
