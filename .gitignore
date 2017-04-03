@@ -2,4 +2,4 @@ build
 .idea
 .gradle
 dist/*.js.map
-dist/libharmony-*/
+dist/web/libharmony-*/

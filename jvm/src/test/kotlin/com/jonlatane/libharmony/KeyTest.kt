@@ -4,6 +4,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
+ * Tests for operations on musical Keys.
+ * 
  * Created by jonlatane on 3/31/17.
  */
 class KeyTest {

@@ -17,7 +17,7 @@ dependencies {
 }
 
 jar {
-    destinationDir = file('../dist')
+    destinationDir = file('../dist/jvm')
     baseName = 'libharmony'
 }
 

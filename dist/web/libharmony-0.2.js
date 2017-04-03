@@ -128,136 +128,37 @@ this['libharmony-0.2'] = function (Kotlin) {
             var s2_heptClass = _.com.jonlatane.libharmony.toHeptatonicNumber_s8itvh$(s2.charAt(0));
             return s2_heptClass - s1_heptClass + 7 * (s2_octave - s1_octave);
           },
-          Key: Kotlin.createClass(function () {
-            return [_.com.jonlatane.libharmony.Scale];
-          }, function Key(root) {
-            Key.baseInitializer.call(this, root);
-            this.invariant();
-          }, /** @lends _.com.jonlatane.libharmony.Key.prototype */ {
-            invariant: function () {
-              if (this.root.enharmonic == null)
-                throw Kotlin.Throwable('Keys must have a root name.');
-            },
-            getNoteName_za3lpa$: function (tone) {
-              var tmp$0, tmp$1, tmp$2, tmp$3, tmp$4, tmp$5, tmp$6, tmp$7, tmp$8, tmp$9;
-              var i = _.com.jonlatane.libharmony.mod_gb6t67$(tone, (tmp$0 = this.modulus) != null ? tmp$0 : Kotlin.throwNPE());
-              Kotlin.println('Getting note name for ' + i + ' in ' + this.toString());
-              var result = '';
-              var rootCharIndex = _.com.jonlatane.libharmony.toHeptatonicNumber_s8itvh$(((tmp$1 = this.root.enharmonic) != null ? tmp$1 : Kotlin.throwNPE()).charAt(0));
-              var p = this.degreeOf_za3lpa$(i);
-              if (p.first === p.second) {
-                var letterName = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.first - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
-                result += letterName;
-                if (i < ((tmp$2 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName)) != null ? tmp$2 : Kotlin.throwNPE())) {
-                  result += _.com.jonlatane.libharmony.FLAT;
-                }
-                if (i > ((tmp$3 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName)) != null ? tmp$3 : Kotlin.throwNPE())) {
-                  result += '#';
-                }
-              }
-               else {
-                Kotlin.println('Trying to name note not in Key: ' + p.first + ',' + p.second + ';' + _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.getDegree_za3lpa$(p.first)) + ',' + _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.getDegree_za3lpa$(p.second)));
-                if (_.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.getDegree_za3lpa$(p.first)) < _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.distance_vux9f0$(i, this.getDegree_za3lpa$(p.second))) {
-                  var letterName_0 = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.first - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
-                  result += letterName_0;
-                  if (i < ((tmp$4 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$4 : Kotlin.throwNPE())) {
-                    result += _.com.jonlatane.libharmony.FLAT;
-                  }
-                  if (i > ((tmp$5 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$5 : Kotlin.throwNPE())) {
-                    result += '#';
-                  }
-                  if (i > ((tmp$6 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_0)) != null ? tmp$6 : Kotlin.throwNPE()) + 1) {
-                    result += '#';
-                  }
-                }
-                 else {
-                  var letterName_1 = _.com.jonlatane.libharmony.toHeptatonicCharacter_za3lpa$(_.com.jonlatane.libharmony.mod_gb6t67$(rootCharIndex + p.second - 1, _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC));
-                  result += letterName_1;
-                  if (i > ((tmp$7 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$7 : Kotlin.throwNPE())) {
-                    result += '#';
-                  }
-                  if (i < ((tmp$8 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$8 : Kotlin.throwNPE())) {
-                    result += _.com.jonlatane.libharmony.FLAT;
-                  }
-                  if (i < ((tmp$9 = _.com.jonlatane.libharmony.TWELVE_TONE_INVERSE.get_za3rmp$(letterName_1)) != null ? tmp$9 : Kotlin.throwNPE()) - 1) {
-                    result += _.com.jonlatane.libharmony.FLAT;
-                  }
-                }
-              }
-              Kotlin.println('Got note name ' + result);
-              return result;
-            },
-            getRootLikelihoodsAndNames: function (c) {
-              return _.com.jonlatane.libharmony.Key.Companion.getRootLikelihoodsAndNames_bp1o7t$(Kotlin.kotlin.collections.toList_q5oq31$(new Kotlin.NumberRange(0, 11)), c, this);
-            }
-          }, /** @lends _.com.jonlatane.libharmony.Key */ {
-            Companion: Kotlin.createObject(null, function Companion() {
-            }, /** @lends _.com.jonlatane.libharmony.Key.Companion.prototype */ {
-              getRootLikelihoodsAndNames_bp1o7t$: function (inputRootCandidates, c, k) {
-                var tmp$0;
-                var result = Kotlin.kotlin.collections.mutableMapOf_eoa9s7$([]);
-                var declaredRoot = c.root;
-                tmp$0 = inputRootCandidates.iterator();
-                while (tmp$0.hasNext()) {
-                  var n = tmp$0.next();
-                  var tmp$1 = Chord.guessCharacteristic(c, n)
-                  , name = tmp$1.component1()
-                  , score = tmp$1.component2();
-                  if (n === c.root.tone) {
-                    score += 1000;
-                  }
-                  var bucket = result.get_za3rmp$(score);
-                  if (bucket == null) {
-                    bucket = Kotlin.kotlin.collections.mutableListOf_9mqe4v$([]);
-                    result.put_wn2jw4$(score, bucket);
-                  }
-                  var rootName = k.getNoteName_za3lpa$(n);
-                  bucket.add_za3rmp$(rootName + name);
-                }
-                return result;
-              }
-            }),
-            object_initializer$: function () {
-              _.com.jonlatane.libharmony.Key.Companion;
-            }
-          }),
-          Key_init_shmg3a$: function (scale, $this) {
-            $this = $this || Object.create(_.com.jonlatane.libharmony.Key.prototype);
-            _.com.jonlatane.libharmony.Key.call($this, scale.root);
-            $this.addAll_wtfk93$(scale);
-            return $this;
-          },
           Keys: Kotlin.createObject(null, function Keys() {
-            this.CMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
-            this.CMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
-            this.DbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'D\u266D')));
-            this.CsMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
-            this.CsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
-            this.DMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
-            this.DMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
-            this.EbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
-            this.EbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
-            this.DsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'D#')));
-            this.EMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
-            this.EMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
-            this.FMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
-            this.FMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
-            this.GbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'G\u266D')));
-            this.FsMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
-            this.FsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
-            this.GMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
-            this.GMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
-            this.AbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
-            this.GsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'G#')));
-            this.AbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
-            this.AMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
-            this.AMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
-            this.BbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
-            this.BbMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
-            this.AsMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'A#')));
-            this.BMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
-            this.CbMajor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'C\u266D5')));
-            this.BMinor = _.com.jonlatane.libharmony.Key_init_shmg3a$(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
+            this.CMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
+            this.CMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(0, 'C')));
+            this.DbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'D\u266D')));
+            this.CsMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
+            this.CsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(1, 'C#')));
+            this.DMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
+            this.DMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(2, 'D')));
+            this.EbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
+            this.EbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'E\u266D')));
+            this.DsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(3, 'D#')));
+            this.EMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
+            this.EMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(4, 'E')));
+            this.FMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
+            this.FMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(5, 'F')));
+            this.GbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'G\u266D')));
+            this.FsMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
+            this.FsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(6, 'F#')));
+            this.GMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
+            this.GMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(7, 'G')));
+            this.AbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
+            this.GsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'G#')));
+            this.AbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(8, 'A\u266D')));
+            this.AMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
+            this.AMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(9, 'A')));
+            this.BbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
+            this.BbMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'B\u266D')));
+            this.AsMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(10, 'A#')));
+            this.BMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
+            this.CbMajor = new Key(new _.com.jonlatane.libharmony.MajorScale(new _.com.jonlatane.libharmony.Pitch(11, 'C\u266D5')));
+            this.BMinor = new Key(new _.com.jonlatane.libharmony.NaturalMinorScale(new _.com.jonlatane.libharmony.Pitch(11, 'B')));
           }),
           mod_gb6t67$: function ($receiver, modulus) {
             return modulus.mod_za3lpa$($receiver);
@@ -769,7 +670,7 @@ this['libharmony-0.2'] = function (Kotlin) {
               tmp$4 = this.iterator();
               while (tmp$4.hasNext()) {
                 var element = tmp$4.next();
-                if (element.tone > tone) {
+                if (element.tone >= tone) {
                   destination.add_za3rmp$(element);
                 }
               }
@@ -847,25 +748,16 @@ this['libharmony-0.2'] = function (Kotlin) {
                 return this;
               }
             },
-            getDegree_za3lpa$: function (tone) {
-              var i = _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC.mod_za3lpa$(tone);
-              if (i === 0) {
-                i = 7;
+            get_za3lpa$: function (scaleDegree) {
+              var normalDegree = (new _.com.jonlatane.libharmony.Modulus(this.size)).mod_za3lpa$(scaleDegree);
+              if (normalDegree === 0) {
+                normalDegree = this.size;
               }
               var currentDegree = 1;
-              var destination = new Kotlin.ArrayList();
-              var tmp$0;
-              tmp$0 = this.iterator();
-              while (tmp$0.hasNext()) {
-                var element = tmp$0.next();
-                if ((new _.com.jonlatane.libharmony.Pitch(element.tone)).compareTo_sg3a3w$(this.root) > 0) {
-                  destination.add_za3rmp$(element);
-                }
-              }
               var itr = this.tailSet_za3lpa$(this.root.tone).iterator();
               while (true) {
                 if (itr.hasNext()) {
-                  if (currentDegree === i) {
+                  if (currentDegree === normalDegree) {
                     return itr.next().tone;
                   }
                    else {
@@ -883,26 +775,19 @@ this['libharmony-0.2'] = function (Kotlin) {
             },
             degreeOf_za3lpa$: function (tone) {
               var i = _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.mod_za3lpa$(tone);
-              var upper = this.ceiling_za3lpa$(i);
-              if (upper == null)
-                upper = this.ceiling_za3lpa$(i - 12);
-              var lower = this.floor_za3lpa$(i);
-              if (lower == null)
-                lower = this.floor_za3lpa$(i + 12);
               var chromatic = this.root.tone;
               var degree = 0;
               var lowerDegree = null;
-              var upperDegree = null;
-              while (lowerDegree == null || upperDegree == null) {
+              while (lowerDegree == null) {
                 if (this.contains_za3lpa$(chromatic))
                   degree += 1;
-                if (chromatic === lower)
+                if (chromatic === i)
                   lowerDegree = degree;
-                if (chromatic === upper)
-                  upperDegree = degree;
                 chromatic += 1;
                 chromatic = _.com.jonlatane.libharmony.Modulus.Companion.TWELVETONE.mod_za3lpa$(chromatic);
               }
+              var lowerDegreeToChromatic = this.get_za3lpa$(lowerDegree);
+              var upperDegree = lowerDegreeToChromatic === i ? lowerDegree : _.com.jonlatane.libharmony.Modulus.Companion.HEPTATONIC.mod_za3lpa$(lowerDegree + 1);
               return new Kotlin.kotlin.Pair(lowerDegree, upperDegree);
             },
             isMajor: {
@@ -915,7 +800,6 @@ this['libharmony-0.2'] = function (Kotlin) {
                 return this.isMinor_usz75w$_0;
               }
             }
-          }, /** @lends _.com.jonlatane.libharmony.Scale */ {
           }),
           MajorScale: Kotlin.createClass(function () {
             return [_.com.jonlatane.libharmony.Scale];
@@ -1033,5 +917,3 @@ this['libharmony-0.2'] = function (Kotlin) {
   Kotlin.defineModule('libharmony-0.2', _);
   return _;
 }(kotlin);
-
-//@ sourceMappingURL=libharmony-0.2.js.map

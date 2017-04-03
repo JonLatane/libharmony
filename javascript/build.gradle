@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.0.6'
+    ext.kotlin_version = '1.0.7'
 
     repositories {
         mavenCentral()
@@ -17,11 +17,25 @@ dependencies {
 
 compileKotlin2Js {
     kotlinOptions {
-        sourceMap = true
-        outputFile = "${rootProject.projectDir}/dist/libharmony-${version}.js"
+        sourceMap = false
+        outputFile = "${rootProject.projectDir}/dist/web/libharmony-${version}.js"
         suppressWarnings = false
         verbose = true
-        metaInfo = false
+        metaInfo = true
+    }
+    doLast {
+        configurations.compile.each { File file ->
+            copy {
+                includeEmptyDirs = false
+
+                from zipTree(file.absolutePath)
+                into "${rootProject.projectDir}/dist/web"
+                include { fileTreeElement ->
+                    def path = fileTreeElement.path
+                    path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+                }
+            }
+        }
     }
 }
 
