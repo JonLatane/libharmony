@@ -2,12 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Harmony library</title>
+    <title>libharmony</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 <body>
-Harmony is a DSL for music!
+<div class="jumbotron">
+    <div class="container">
+        <h1>libharmony</h1>
+        <h3>musical computation made easy</h3>
+    </div>
+</div>
+
+<div class="container">
+    <p>
+        Harmony is a DSL for music. It's written in Kotlin and supports JVM and JS compilation targets.
+        Harmony is licensed under the LGPL, so use it in your proprietary project and acknowledge us!
+    </p>
+    <p>
+        Here's an example of what the Harmony library is capable of:
+    </p>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Input</h4>
+            <p>
+                <input type="text" value="C"/>
+            </p>
+            <p>
+                <input type="text" value="E"/>
+            </p>
+            <p>
+                <input type="text" value="G"/>
+            </p>
+            <p>
+                <input type="text" value=""/>
+            </p>
+            <p>
+                <input type="text" value=""/>
+            </p>
+            <p>
+                <input type="text" value=""/>
+            </p>
+            <p>
+                <input type="text" value=""/>
+            </p>
+        </div>
+        <div class="col-sm-6">
+            <h4>Output</h4>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="dist/web/kotlin.js"></script>
 <script type="text/javascript" src="dist/web/libharmony-0.2.js"></script>
+<script type="text/javascript">
+    var libharmony = this["libharmony-0.2"].com.jonlatane.libharmony;
+</script>
 </body>
 </html>
