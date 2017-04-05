@@ -14,6 +14,7 @@ import com.jonlatane.libharmony.Pitch.Companion.getTone
  *
  * Created by jonlatane on 12/17/16.
  */
+@JsName("Pitch")
 data class Pitch(
         val tone: Int,
         val enharmonic: String? = null
@@ -21,6 +22,7 @@ data class Pitch(
     /**
      * Convenience constructor from enharmonic only based on [getTone]
      */
+    @JsName("PitchFromEnharmonic")
     constructor(enharmonic: String) : this(getTone(enharmonic), enharmonic)
     
     init {

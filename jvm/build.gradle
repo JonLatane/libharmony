@@ -25,4 +25,7 @@ jar {
 sourceSets {
     main.kotlin.srcDirs += 'src/main/kotlin'
     main.kotlin.srcDirs += '../shared/src/main/kotlin'
+    test.kotlin.srcDirs += 'src/main/kotlin'
+    test.kotlin.srcDirs += 'src/test/kotlin'
+    test.kotlin.srcDirs += '../shared/src/test/kotlin'
 }

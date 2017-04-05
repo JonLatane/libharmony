@@ -23,7 +23,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
  * *
  * @getCharacteristic and @guessCharacteristic, for guessing the characteristic of a chord
  */
-@native open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
+open class Chord(vararg elements: Pitch) : PitchSet(Modulus.TWELVETONE, *elements) {
     var root: Pitch = elements.elementAtOrElse(0, {Pitch(0)})
     override fun toString(): String {
         return super.toString() + " / $root"
@@ -123,7 +123,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
          * *
          * @return
          */
-        @native fun guessCharacteristic(c: Chord, root: Int): Pair<String, Int> {
+        fun guessCharacteristic(c: Chord, root: Int): Pair<String, Int> {
             var name = ""
             var certainty = 0
 

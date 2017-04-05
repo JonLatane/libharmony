@@ -12,7 +12,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
 
  * @author Jon
  */
-@native class Key(root: Pitch) : Scale(root) {
+class Key(root: Pitch) : Scale(root) {
     constructor(scale: Scale) : this(scale.root) {
         addAll(scale)
     }
@@ -41,7 +41,7 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
      * *
      * @return
      */
-    @native fun getNoteName(tone: Int): String {
+    fun getNoteName(tone: Int): String {
         val i: Int = tone % modulus!!
         var result = ""
 
@@ -101,15 +101,15 @@ import com.jonlatane.libharmony.Modulus.Companion.TWELVETONE
         return result
     }
 
-    @native fun getRootLikelihoodsAndNames(c: Chord): Map<Int, List<String>> {
+    fun getRootLikelihoodsAndNames(c: Chord): Map<Int, List<String>> {
         val result = mutableMapOf<Int, MutableList<String>>()
         for (n in 0..11) {
             val data = Chord.guessCharacteristic(c, n)
             val name = data.first
-            var score = data.second
-            if (n == c.root.tone) {
-                score += 1000
-            }
+            val score = data.second
+            //if (n == c.root.tone) {
+            //    score += 1000
+            //}
             var bucket: MutableList<String>? = result[score]
             if (bucket == null) {
                 bucket = mutableListOf<String>()
